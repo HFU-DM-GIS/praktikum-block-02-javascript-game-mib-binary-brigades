@@ -1,23 +1,23 @@
-var canvas = document.getElementById("game"); //create var for canvas
-var canvasContext = canvas.getContext("2d"); // makes the canvas 2d
+const canvas = document.getElementById("game"); //create var for canvas
+let canvasContext = canvas.getContext("2d"); // makes the canvas 2d
 
-var widthOfTiles  = 20; // dimension of Tiles
+let widthOfTiles  = 20; // dimension of Tiles
 
-var rows = 50;
-var cols = 50;
+let rows = 50;
+let cols = 50;
 
-var grid = []; //stores the Layout
+let grid = []; //stores the Layout
 
-var rooms = []; // stores the Rooms
-var collide = false; //Sets Rooms collide false
+let rooms = []; // stores the Rooms
+let collide = false; //Sets Rooms collide false
 
-var amountOfRooms = 7;
-var RoomSizeMax = 5;
-var RoomSizeMin = 5
+let amountOfRooms = 7;
+let RoomSizeMax = 5;
+let RoomSizeMin = 5
 
-var disX;
-var disY;
-var corridorWidth = 1;
+let disX;
+let disY;
+let corridorWidth = 1;
 
 //--------------------------------------------------------------//
 
@@ -45,7 +45,7 @@ function Cell(col, row, x, y )// ohne this// cell Object
 
     this.carveRooms = function(dis, x, y) //carve out Rooms
     {
-        for (var i = 0; i < rooms.length; i++)
+        for (let i = 0; i < rooms.length; i++)
         {
             if (this.col >= rooms[i].y  / widthOfTiles && this.col < rooms[i].y / widthOfTiles + rooms[i].h / widthOfTiles && this.row >= rooms[i].x / widthOfTiles && this.row < rooms[i].x / widthOfTiles + rooms[i].widthOfTiles/ widthOfTiles)
                     {
@@ -73,13 +73,13 @@ function Cell(col, row, x, y )// ohne this// cell Object
 
 function makeGrid() 
 {
-    for (var r = 0; r < rows; r++)
+    for (let r = 0; r < rows; r++)
     {
-        for (var c = 0; c < cols; y++)
+        for (let c = 0; c < cols; c++)
         {
-            var y = i * widthOfTiles;
-            var x = i * widthOfTiles;
-            var cell = new Cell(c, r, x, y)
+            let y = r * widthOfTiles;
+            let x = c * widthOfTiles;
+            let cell = new Cell(c, r, x, y)
             grid.push(cell);
         }
     }
@@ -87,13 +87,13 @@ function makeGrid()
 
 function draw()
 {
-    for (var i = 0; i < grid.length; i++)
+    for (let i = 0; i < grid.length; i++)
     {
         grid[i].show();
-        grid[i].carve();
+        grid[i].carveRooms();
     }
 
-    for (var i = 0; i < grid.rooms; i++)
+    for (let i = 0; i < grid.rooms; i++)
     {
         rooms[i].draw();
     }
