@@ -9,3 +9,9 @@
 body {
     background-color: darkred;
 }
+
+#game {
+    width: "1000";
+    height: "1000";
+    background-color: green;
+}
