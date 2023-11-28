@@ -3,8 +3,8 @@ let canvasContext = canvas.getContext("2d"); // makes the canvas 2d
 
 let widthOfTiles  = 20; // dimension of Tiles
 
-let rows = 50;
-let cols = 50;
+let rows = 5;
+let cols = 5;
 
 let grid = []; //stores the Layout
 
@@ -21,29 +21,35 @@ let corridorWidth = 1;
 
 //--------------------------------------------------------------//
 
-function Cell(col, row, x, y )// ohne this// cell Object
+class Cell
 {
-    this.col = col;
-    this.row = row;
-    this.x = x;
-    this.y = y
-    this.empty = false;
-
-
-    this.show = function()
+    constructor(col, row, x, y )// cell Object
     {
-        if (this.empty == false)
+        this.col = col;
+        this.row = row;
+        this.x = x;
+        this.y = y;
+        this.empty = true;
+    }
+
+    
+    show()
+    {
+        if (this.empty)
         {
             canvasContext.fillStyle = "#323232";
             canvasContext.fillRect(this.x, this.y, widthOfTiles, widthOfTiles)
+            canvasContext.strokeStyle = "#525252";
+            canvasContext.strokeRect(this.x, this.y, widthOfTiles, widthOfTiles)
         } else
         {
             canvasContext.fillStyle = "#696966";
             canvasContext.fillRect(this.x, this.y, widthOfTiles, widthOfTiles)
         }
     };
+    
 
-    this.carveRooms = function(dis, x, y) //carve out Rooms
+    carveRooms(dis, x, y) //carve out Rooms
     {
         for (let i = 0; i < rooms.length; i++)
         {
@@ -54,7 +60,7 @@ function Cell(col, row, x, y )// ohne this// cell Object
         }
     };
 
-    this.carveH = function(dis, x, y) //carve out the horizontal corridors
+     carveH(dis, x, y) //carve out the horizontal corridors
     {
         if (this.row >= y && this.row < y + dis && this.col < corridorWidth && this.col > y - corridorWidth)
         {
@@ -62,7 +68,7 @@ function Cell(col, row, x, y )// ohne this// cell Object
         }
     };
 
-    this.carveV = function(dis, x, y)
+     carveV(dis, x, y)
     {
         if (this.col >= y && this.col < y +dis && this.row < x + corridorWidth && this.row > x - corridorWidth)
         {
