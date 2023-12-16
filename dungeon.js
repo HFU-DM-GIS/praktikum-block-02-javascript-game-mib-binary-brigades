@@ -108,3 +108,48 @@ function draw()
 makeGrid();
 // createRooms(); not implemented yet
 draw();
+
+let canvasplayer = document.getElementById("player");
+let context = canvasplayer.getContext("2d")
+let playerX = 0; 
+let playerY = 0;
+let playerSize = 20;
+let keys = [];
+window.addEventListener("keydown",function(e){
+    keys[e.keyCode] = true
+})
+window.addEventListener("keyup",function(e) {
+    keys[e.keyCode] = false
+})
+
+function init(){    //player position
+    playerX = 50
+    playerY = 50
+}
+function loop(){    
+    update()
+    render()
+
+}
+function update(){ //player movement/score
+    if(keys[87] == true){   //up (w)
+        playerY = playerY - 10
+    }
+    if(keys[65] == true){   //left (a)
+        playerX = playerX - 10
+    }
+     if(keys[83] == true){   //down (s)
+        playerY = playerY + 10
+    }
+    if(keys[68] == true){   //right (d)
+        playerX = playerX + 10
+    }
+   
+}
+function render(){
+    context.clearRect(0,0,1000,1000)
+    context.fillStyle = "green"     //player color
+    context.fillRect(playerX,playerY,playerSize,playerSize)
+}
+window.setInterval(loop,1000/60)
+init()
