@@ -1,14 +1,14 @@
-
 let canvasplayer = document.getElementById("player");
 let context = canvasplayer.getContext("2d")
 let playerX = 0; 
 let playerY = 0;
-let playerSize = 50;
+let playerSize = 20;
+let playercolor = "green";
+let speed = 3;
 let keys = [];
-let keyX = 200;
-let keyY = 200;
-let keySize = 50;
-
+let keyX = 100;
+let keyY = 100;
+let keySize = 20;
 
 window.addEventListener("keydown",function(e){
     keys[e.keyCode] = true
@@ -27,29 +27,33 @@ function loop(){
 }
 function update(){ //player movement/score
     if(keys[87] == true){   //up (w)
-        playerY = playerY - 1
+        playerY = playerY - speed
     }
     if(keys[65] == true){   //left (a)
-        playerX = playerX - 1
+        playerX = playerX - speed
     }
      if(keys[83] == true){   //down (s)
-        playerY = playerY + 1
+        playerY = playerY + speed
     }
     if(keys[68] == true){   //right (d)
-        playerX = playerX + 1
+        playerX = playerX + speed
     }
     if(playerX + playerSize > keyX && playerY + playerSize > keyY && keyX + keySize > playerX && keyY + keySize > playerY) {
         playerCollectedKey()
     }
  
 }
+
 function playerCollectedKey(){
-    
+    keyX = 1500;
+    keyY = 1500;
+    playercolor = "lightblue";
+
 
 }
 function render(){
     context.clearRect(0,0,1000,1000)
-    context.fillStyle = "green"     //player color
+    context.fillStyle = playercolor     //player color
     context.fillRect(playerX,playerY,playerSize,playerSize)
     
     context.fillStyle = "yellow"    //key color
