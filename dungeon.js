@@ -3,8 +3,8 @@ let canvasContext = canvas.getContext("2d"); // makes the canvas 2d
 
 let widthOfTiles  = 20; // dimension of Tiles
 
-let rows = 50;
-let cols = 50;
+let rows = 30;
+let cols = 30;
 
 let grid = []; //stores the Layout
 
@@ -60,20 +60,20 @@ class Cell // cell Object
 					}
     };
 
-     carveH(dis, x, y) //carve out the horizontal corridors
-    {
-        if (this.row >= y && this.row < y + dis && this.col < corridorWidth && this.col > y - corridorWidth)
-        {
-            this.empty = false;
-        }
-    };
+    carveH (dis,x,y)//carve out the horizontal corridor
+			{
+				if(this.row >= x && this.row < x + dis && this.col < y + corridorWidth && this.col > y - corridorWidth)
+					{
+						this.empty = false;
+					}
+			}
 
      carveV(dis, x, y)
     {
-        if (this.col >= y && this.col < y +dis && this.row < x + corridorWidth && this.row > x - corridorWidth)
-        {
-            this.empty = false;
-        }
+        if(this.col >= y && this.col < y + dis && this.row < x + corridorWidth && this.row > x - corridorWidth)
+		{
+			this.empty = false;
+		}
     };
 }
 
@@ -114,30 +114,132 @@ class Room
     }
 }
 
-function createRooms() {
+function createRooms()
+{
     for (let i = 0; i < amountOfRooms; i++)
     {
-     let room = new Room(Math.floor(Math.random() * rows) + 1, Math.floor(Math.random() * cols) + 1, Math.floor(Math.random() * size) + roomSizeMin, Math.floor(Math.random() * size) + roomSizeMin, i)
-     rooms.push(room)
+        let room = new Room(Math.floor(Math.random() * rows) + 1, Math.floor(Math.random() * cols) + 1, Math.floor(Math.random() * size) + roomSizeMin, Math.floor(Math.random() * size) + roomSizeMin, i) // creats random coordinates in bound
+        if (i > 0) //if not the first generated room
+        {if (rooms[0].x + rooms[0].w >= canvas.width || rooms[0].x <= 0 || rooms[0].y+rooms[0].h >= canvas.height || rooms[0].y <= 0) //if first room is outside the canvas) 
+            
+            {
+                rooms = [] //restart
+                createRooms();
+                break;
+            }
+            for (let e = 0; e < rooms.length; e++)
+            {
+                collide = false;
+                if (room.x <= rooms[e].x + rooms[e].w && room.x + room.w >= rooms[e].x && room.y <= rooms[e].y+rooms[e].h && room.y + room.h >= rooms[e].y) // if rooms collide
+                {
+                    collide = true; //kill room
+                    i--;
+                    break;
+                }
+                else if (room.x + room.w >= canvas.width || room.x <= 0 || room.y + room.h >= canvas.height || room.y <= 0) //if room is out of bounds
+                {
+                    collide = true; //kill room
+                    i--;
+                    break;
+                }
+            }
+        }
+        if (collide == false)
+        {
+            rooms.push(room)
+            if(i > 0)
+            {
+                hCorridor(rooms[i-1].center[0], room.center[0], rooms[i-1].center[1], room.center[1])
+				vCorridor(rooms[i-1].center[0], room.center[0], rooms[i-1].center[1], room.center[1])
+            }
+        }
     }
+}
+//--------------------------------------------------------------//
+
+function hCorridor(x1,x2,y1,y2)//horizontal corridor creator
+{
+	if(x1 > x2)//if the first room is further towards the right then the second one
+	{
+		disX = x1-x2 //find the distance between rooms
+		disX += 1
+			
+		for (var i = 0; i < grid.length; i++) 
+		{
+			grid[i].carveH(disX, x2, y2)//carve out the corridor
+		}				
+	}
+	else//if the second room is further towards the right then the first one
+	{
+		disX = x2 - x1 //find the distance between rooms
+		disX += 1
+		for (var i = 0; i < grid.length; i++) 
+       	{
+			grid[i].carveH(disX, x1, y1)//carve out corridor
+		}
+	}
+			
+	}
+
+function vCorridor(x1,x2,y1,y2)//vertical corridor creator
+	{
+	let x;	
+	if(y1 > y2)//if the first room is further towards the bottom then the second one
+		{
+			disY = y1-y2; //find the distance between rooms
+			disY += 1;
+			
+			if(x2+(disX-1) > x1+(disX-1))//find the correct x coord
+				{
+					x = x2;
+				}
+			else 
+				{
+				x = x2 + (disX - 1);
+				}
+				
+			for(var i = 0; i < grid.length; i++) 
+				{
+					grid[i].carveV(disY, x, y2);//carve out corridor
+				}
+			}
+	else//if the second room is further towards the bottom then the first one
+		{
+	    	disY = y2 - y1; //find the distance between rooms
+		    disY += 1;
+				
+			if(x1+(disX-1) > x2+(disX-1))//find the correct x coord
+				{
+					x = x1;
+				}	
+			else 
+				{
+					x = x1 + (disX - 1);
+				}
+					
+			for (var i = 0; i < grid.length; i++) 
+				{
+					grid[i].carveV(disY, x, y1);//carve out corridor
+                }
+        }
 }
 //--------------------------------------------------------------//
 
 function draw()
 {
-    for (let i = 0; i < grid.length; i++)
+    for (let i = 0; i < grid.length; i++) //draws map
     {
-        grid[i].carveRooms();
-        grid[i].show();
+        grid[i].carveRooms(); //carves out rooms
+        grid[i].show(); //shows whole map
     }
 
     for (let i = 0; i < grid.rooms; i++)
     {
-        rooms[i].draw();
+        rooms[i].draw(); //draws room numbers
     }
 }
 
 makeGrid();
 createRooms();
-console.log(rooms[1].w)
 draw();
+console.log("x:" + rooms[1].center[0]+ "y:" + rooms[1].center[1])

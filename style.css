@@ -1,12 +1,13 @@
 
 .header {
-    text-align: center;
     font-size: 50px;
-
-    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 
 body {
-    background-color: darkred;
+    background-color: lightcoral;
 }
 
