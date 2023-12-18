@@ -60,7 +60,7 @@ class Cell // cell Object
 					}
     };
 
-    carveH (dis,x,y)//carve out the horizontal corridor
+    carveH (dis, x, y)//carve out the horizontal corridor
 			{
 				if(this.row >= x && this.row < x + dis && this.col < y + corridorWidth && this.col > y - corridorWidth)
 					{
@@ -188,25 +188,25 @@ function createRooms()
 }
 //--------------------------------------------------------------//
 
-function hCorridor(x1,x2,y1,y2)//horizontal corridor creator
+function hCorridor(x1,x2,y1,y2) //horizontal corridor creator
 {
-	if(x1 > x2)//if the first room is further towards the right then the second one
+	if(x1 > x2) //if the first room is further towards the right then the second one
 	{
-		disX = x1-x2 //find the distance between rooms
-		disX += 1
+		disX = x1 - x2; //find the distance between rooms
+		disX += 1;
 			
 		for (var i = 0; i < grid.length; i++) 
 		{
-			grid[i].carveH(disX, x2, y2)//carve out the corridor
+			grid[i].carveH(disX, x2, y2) //carve out the corridor
 		}				
 	}
-	else//if the second room is further towards the right then the first one
+	else //if the second room is further towards the right then the first one
 	{
-		disX = x2 - x1 //find the distance between rooms
-		disX += 1
+		disX = x2 - x1; 
+		disX += 1;
 		for (var i = 0; i < grid.length; i++) 
        	{
-			grid[i].carveH(disX, x1, y1)//carve out corridor
+			grid[i].carveH(disX, x1, y1);
 		}
 	}
 			
@@ -220,7 +220,7 @@ function vCorridor(x1,x2,y1,y2)//vertical corridor creator
 			disY = y1-y2; //find the distance between rooms
 			disY += 1;
 			
-			if(x2+(disX-1) > x1+(disX-1))//find the correct x coord
+			if(x2+(disX - 1) > x1+( disX - 1))//find the correct x coord
 				{
 					x = x2;
 				}
@@ -231,7 +231,7 @@ function vCorridor(x1,x2,y1,y2)//vertical corridor creator
 				
 			for(var i = 0; i < grid.length; i++) 
 				{
-					grid[i].carveV(disY, x, y2);//carve out corridor
+					grid[i].carveV(disY, x, y2);
 				}
 			}
 	else//if the second room is further towards the bottom then the first one
@@ -239,7 +239,7 @@ function vCorridor(x1,x2,y1,y2)//vertical corridor creator
 	    	disY = y2 - y1; //find the distance between rooms
 		    disY += 1;
 				
-			if(x1+(disX-1) > x2+(disX-1))//find the correct x coord
+			if(x1+(disX-1) > x2+(disX-1)) //find the correct x coord
 				{
 					x = x1;
 				}	
@@ -250,7 +250,7 @@ function vCorridor(x1,x2,y1,y2)//vertical corridor creator
 					
 			for (var i = 0; i < grid.length; i++) 
 				{
-					grid[i].carveV(disY, x, y1);//carve out corridor
+					grid[i].carveV(disY, x, y1);
                 }
         }
 }
