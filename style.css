@@ -11,3 +11,14 @@ body {
     background-color: lightcoral;
 }
 
+#player,
+#game {
+    position: absolute;
+    top: 50;
+    left: 50;
+}
+
+#game {
+    pointer-events: none;
+}
+

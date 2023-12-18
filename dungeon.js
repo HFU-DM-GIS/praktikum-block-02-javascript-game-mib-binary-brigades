@@ -113,6 +113,37 @@ class Room
         canvasContext.fillText(i, this.x + this.w / 2, this.y+this.h / 2-20)
     }
 }
+//--------------------------------------------------------------//
+class Room
+{
+    constructor (x, y, width, height, i)
+    {
+        this.x = (x - 1) * widthOfTiles;
+        this.y = (y - 1) * widthOfTiles;
+        this.w = width * widthOfTiles;
+        this.h = height * widthOfTiles;
+
+        this.center = [
+            Math.floor(this.x / widthOfTiles + width / 2),
+            Math.floor(this.y / widthOfTiles + height / 2)
+        ]
+    } 
+
+    draw() 
+    {
+        canvasContext.fillStyle = "white";
+        canvasContext.fillText(i, this.x + this.w / 2, this.y+this.h / 2-20)
+    }
+}
+
+function createRooms() {
+    for (let i = 0; i < amountOfRooms; i++)
+    {
+     let room = new Room(Math.floor(Math.random() * rows) + 1, Math.floor(Math.random() * cols) + 1, Math.floor(Math.random() * size) + roomSizeMin, Math.floor(Math.random() * size) + roomSizeMin, i)
+     rooms.push(room)
+    }
+}
+//--------------------------------------------------------------//
 
 function createRooms()
 {
