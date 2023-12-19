@@ -2,13 +2,15 @@ let canvasplayer = document.getElementById("player");
 let context = canvasplayer.getContext("2d")
 let playerX = 0; 
 let playerY = 0;
-let playerSize = 20;
-let playercolor = "green";
+let playerSize = 10;
+let playercolor = "lightblue";
 let speed = 3;
 let keys = [];
 let keyX = 100;
 let keyY = 100;
-let keySize = 20;
+let keySize = 10;
+let score = 0;
+let quotes = [];
 
 window.addEventListener("keydown",function(e){
     keys[e.keyCode] = true
@@ -18,8 +20,10 @@ window.addEventListener("keyup",function(e) {
 })
 
 function init(){    //player starting position
-    playerX = 50
-    playerY = 50
+    playerX = Math.random()*(600-playerSize);
+    playerY = Math.random()*(600-playerSize);
+    keyX = Math.random()*(600-keySize);
+    keyY = Math.random()*(600-keySize);
 }
 function loop(){    
     update()
@@ -41,15 +45,23 @@ function update(){ //player movement/score
     if(playerX + playerSize > keyX && playerY + playerSize > keyY && keyX + keySize > playerX && keyY + keySize > playerY) {
         playerCollectedKey()
     }
+    if(score > 0 && score % 1 == 0) {
+        fetch('https://api.whatdoestrumpthink.com/api/v1/quotes/random')
+        .then(response => response.json())
+        .then(data => {
+           quotes.push(data.quote);
+        })
+        .catch(error => {
+           console.error('Error:', error);
+        })
+    }
  
 }
 
 function playerCollectedKey(){
-    keyX = 1500;
-    keyY = 1500;
-    playercolor = "lightblue";
-
-
+    keyX = Math.random()*(600-keySize);
+    keyY = Math.random()*(600-keySize);
+    score = score + 1;
 }
 function render(){
     context.clearRect(0,0,1000,1000)
@@ -60,6 +72,16 @@ function render(){
     context.beginPath()
     context.arc(keyX + keySize/2,keyY + keySize/2,keySize/2,keySize/2,0,360)
     context.fill()
+
+    context.fillStyle = "white"
+    context.font = "20px Impact"
+    context.fillText ("Score: "+ score,0,20)
+
+    if(quotes.length > 0) {
+        context.fillStyle = "white";
+        context.font = "20px Impact";
+        context.fillText(quotes[quotes.length - 1], 0, 50);
+    }
 }
 function clearPlayer() {
     drawPlayer(player.initialX, player.initialY, player.size);
