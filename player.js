@@ -8,7 +8,7 @@ let speed = 3;
 let keys = [];
 let keyX = 100;
 let keyY = 100;
-let keySize = 10;
+let keySize = 20;
 let score = 0;
 let quotes = [];
 
@@ -18,6 +18,15 @@ window.addEventListener("keydown",function(e){
 window.addEventListener("keyup",function(e) {
     keys[e.keyCode] = false
 })
+async function fetchQuote() {
+    try {
+        const response = await fetch('https://api.whatdoestrumpthink.com/api/v1/quotes/random');
+        const data = await response.json();
+        return data.quote;
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
 
 function init(){    //player starting position
     playerX = Math.random()*(600-playerSize);
@@ -46,38 +55,34 @@ function update(){ //player movement/score
         playerCollectedKey()
     }
     if(score > 0 && score % 1 == 0) {
-        fetch('https://api.whatdoestrumpthink.com/api/v1/quotes/random')
-        .then(response => response.json())
-        .then(data => {
-           quotes.push(data.quote);
-        })
-        .catch(error => {
-           console.error('Error:', error);
-        })
+        fetchQuote().then(quote => {
+            quotes.push(quote);
+        });
     }
  
 }
+
 
 function playerCollectedKey(){
     keyX = Math.random()*(600-keySize);
     keyY = Math.random()*(600-keySize);
     score = score + 1;
 }
-function render(){
+function render(){      //creating viewable objects
     context.clearRect(0,0,1000,1000)
-    context.fillStyle = playercolor     //player color
+    context.fillStyle = playercolor     //player
     context.fillRect(playerX,playerY,playerSize,playerSize)
     
-    context.fillStyle = "yellow"    //key color
+    context.fillStyle = "yellow"    //key
     context.beginPath()
     context.arc(keyX + keySize/2,keyY + keySize/2,keySize/2,keySize/2,0,360)
     context.fill()
 
-    context.fillStyle = "white"
+    context.fillStyle = "white"     //score
     context.font = "20px Impact"
     context.fillText ("Score: "+ score,0,20)
 
-    if(quotes.length > 0) {
+    if(quotes.length > 0) {     //api
         context.fillStyle = "white";
         context.font = "20px Impact";
         context.fillText(quotes[quotes.length - 1], 0, 50);
