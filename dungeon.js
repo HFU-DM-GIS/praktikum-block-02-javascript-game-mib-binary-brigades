@@ -11,7 +11,7 @@ let grid = []; //stores the Layout
 let rooms = []; // stores the Rooms
 let collide = false; //Sets Rooms collide false
 
-let amountOfRooms = 7;
+let amountOfRooms = 7; // besser "numRooms"
 let size = 5;
 let roomSizeMin = 5
 
@@ -30,7 +30,7 @@ class Cell // cell Object
         this.y = y;
         this.empty = true;
     }
-
+    // Benutzt am besten noch einen eigenen Datentyp für die Art der Zelle (leer, Raum, Spieler, Schlüssel, Ausgang)
 
     show() {
         if (this.empty) {
@@ -74,7 +74,7 @@ function makeGrid() {
             let y = r * widthOfTiles;
             let x = c * widthOfTiles;
             let cell = new Cell(c, r, x, y)
-            grid.push(cell);
+            grid.push(cell); // entweder einen 2D Array nehmen oder sich Methoden schreiben, die den Zugriff korrekt machen
         }
 
     }
@@ -100,7 +100,7 @@ class Room {
 }
 
 function createRooms() {
-    for (let i = 0; i < amountOfRooms; i++) {
+    for (let i = 0; i < amountOfRooms; i++) { 
         let room = new Room(Math.floor(Math.random() * rows) + 1, Math.floor(Math.random() * cols) + 1, Math.floor(Math.random() * size) + roomSizeMin, Math.floor(Math.random() * size) + roomSizeMin, i) // creats random coordinates in bound
         if (i > 0) //if not the first generated room
         {
@@ -108,14 +108,14 @@ function createRooms() {
 
             {
                 rooms = [] //restart
-                createRooms();
-                break;
+                createRooms(); // Vorsicht mit rekursiven Aufrufen
+                break; // break springt nur aus der Schleife raus, das könnte noch zum Problem werden, wenn ihr hinter die Schleife noch Code schreibt.
             }
-            for (let e = 0; e < rooms.length; e++) {
+            for (let e = 0; e < rooms.length; e++) { // Typischerweise benutzt man j als innere Indexvariable
                 collide = false;
                 if (room.x <= rooms[e].x + rooms[e].w && room.x + room.w >= rooms[e].x && room.y <= rooms[e].y + rooms[e].h && room.y + room.h >= rooms[e].y) // if rooms collide
                 {
-                    collide = true; //kill room
+                    collide = true; //kill room 
                     i--;
                     break;
                 }
