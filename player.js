@@ -12,6 +12,7 @@ let keySize = 20;
 let score = 0;
 let quotes = [];
 
+// check the deprecation warning: https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/keyCode
 window.addEventListener("keydown", function (e) {
     keys[e.keyCode] = true
 })
@@ -51,9 +52,11 @@ function update() { //player movement/score
     if (keys[68] == true) {   //right (d)
         playerX = playerX + speed
     }
+    // dieses if statement in einer Funktion kapseln und diese sinnvoll benennen
     if (playerX + playerSize > keyX && playerY + playerSize > keyY && keyX + keySize > playerX && keyY + keySize > playerY) {
         playerCollectedKey()
     }
+    // hier holt ihr euch im loop immer wieder einen neuen Spruch, das führt nach einer Weile zu einem Fehler
     if (score > 0 && score % 1 == 0) {
         fetchQuote().then(quote => {
             quotes.push(quote);
@@ -63,7 +66,7 @@ function update() { //player movement/score
 }
 
 
-function playerCollectedKey() {
+function playerCollectedKey() { // benennt die Funktion nach dem was sie tutm nicht wann sie aufgerufen wird.
     keyX = Math.random() * (600 - keySize);
     keyY = Math.random() * (600 - keySize);
     score = score + 1;
@@ -92,4 +95,4 @@ function clearPlayer() {
     drawPlayer(player.initialX, player.initialY, player.size);
 }
 window.setInterval(loop, 1000 / 60)
-init()
+init() // ungewöhnlich die Initialisierung nach dem Starten des Game Loops zu machen
