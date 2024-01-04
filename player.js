@@ -1,6 +1,6 @@
 let canvasplayer = document.getElementById("player");
 let context = canvasplayer.getContext("2d")
-let playerX = 0; 
+let playerX = 0;
 let playerY = 0;
 let playerSize = 10;
 let playercolor = "lightblue";
@@ -12,10 +12,10 @@ let keySize = 20;
 let score = 0;
 let quotes = [];
 
-window.addEventListener("keydown",function(e){
+window.addEventListener("keydown", function (e) {
     keys[e.keyCode] = true
 })
-window.addEventListener("keyup",function(e) {
+window.addEventListener("keyup", function (e) {
     keys[e.keyCode] = false
 })
 async function fetchQuote() {
@@ -28,61 +28,61 @@ async function fetchQuote() {
     }
 }
 
-function init(){    //player starting position
-    playerX = Math.random()*(600-playerSize);
-    playerY = Math.random()*(600-playerSize);
-    keyX = Math.random()*(600-keySize);
-    keyY = Math.random()*(600-keySize);
+function init() {    //player starting position
+    playerX = Math.random() * (600 - playerSize);
+    playerY = Math.random() * (600 - playerSize);
+    keyX = Math.random() * (600 - keySize);
+    keyY = Math.random() * (600 - keySize);
 }
-function loop(){    
+function loop() {
     update()
     render()
 }
-function update(){ //player movement/score
-    if(keys[87] == true){   //up (w)
+function update() { //player movement/score
+    if (keys[87] == true) {   //up (w)
         playerY = playerY - speed
     }
-    if(keys[65] == true){   //left (a)
+    if (keys[65] == true) {   //left (a)
         playerX = playerX - speed
     }
-     if(keys[83] == true){   //down (s)
+    if (keys[83] == true) {   //down (s)
         playerY = playerY + speed
     }
-    if(keys[68] == true){   //right (d)
+    if (keys[68] == true) {   //right (d)
         playerX = playerX + speed
     }
-    if(playerX + playerSize > keyX && playerY + playerSize > keyY && keyX + keySize > playerX && keyY + keySize > playerY) {
+    if (playerX + playerSize > keyX && playerY + playerSize > keyY && keyX + keySize > playerX && keyY + keySize > playerY) {
         playerCollectedKey()
     }
-    if(score > 0 && score % 1 == 0) {
+    if (score > 0 && score % 1 == 0) {
         fetchQuote().then(quote => {
             quotes.push(quote);
         });
     }
- 
+
 }
 
 
-function playerCollectedKey(){
-    keyX = Math.random()*(600-keySize);
-    keyY = Math.random()*(600-keySize);
+function playerCollectedKey() {
+    keyX = Math.random() * (600 - keySize);
+    keyY = Math.random() * (600 - keySize);
     score = score + 1;
 }
-function render(){      //creating viewable objects
-    context.clearRect(0,0,1000,1000)
+function render() {      //creating viewable objects
+    context.clearRect(0, 0, 1000, 1000)
     context.fillStyle = playercolor     //player
-    context.fillRect(playerX,playerY,playerSize,playerSize)
-    
+    context.fillRect(playerX, playerY, playerSize, playerSize)
+
     context.fillStyle = "yellow"    //key
     context.beginPath()
-    context.arc(keyX + keySize/2,keyY + keySize/2,keySize/2,keySize/2,0,360)
+    context.arc(keyX + keySize / 2, keyY + keySize / 2, keySize / 2, keySize / 2, 0, 360)
     context.fill()
 
     context.fillStyle = "white"     //score
     context.font = "20px Impact"
-    context.fillText ("Score: "+ score,0,20)
+    context.fillText("Score: " + score, 0, 20)
 
-    if(quotes.length > 0) {     //api
+    if (quotes.length > 0) {     //api
         context.fillStyle = "white";
         context.font = "20px Impact";
         context.fillText(quotes[quotes.length - 1], 0, 50);
@@ -91,5 +91,5 @@ function render(){      //creating viewable objects
 function clearPlayer() {
     drawPlayer(player.initialX, player.initialY, player.size);
 }
-window.setInterval(loop,1000/60)
+window.setInterval(loop, 1000 / 60)
 init()
