@@ -83,8 +83,8 @@ function boxcollision(){
 }
 
 function getDoor() { // benennt die Funktion nach dem was sie tutm nicht wann sie aufgerufen wird.
-    doorX = Math.random() * (600 - keySize);
-    doorY = Math.random() * (600 - keySize);
+    doorX = Math.random() * (600 - doorSize);
+    doorY = Math.random() * (600 - doorSize);
     keyX = 2000;
     keyY = 2000;
     
