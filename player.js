@@ -11,7 +11,7 @@ let keyY = 100;
 let keySize = 20;
 let doorX = 2000;
 let doorY = 2000;
-let doorSize = 20;
+let doorSize = 30;
 let score = 0;
 let quotes = [];
 
@@ -61,7 +61,7 @@ function update() { //player movement/score
         getDoor();
     }
     if (playerX + playerSize > doorX && playerY + playerSize > doorY && doorX + doorSize > playerX && doorY + doorSize > playerY) {
-        openDoor();
+        gotonextFloor();
     }
     /*
     if (playerX + playerSize > Room.X && playerY + playerSize > Room.Y && Room.X + Room.Size > playerX && Room.Y + Room.Size > playerY) {
@@ -76,6 +76,8 @@ function update() { //player movement/score
         });
     }
 
+    
+
 }
 function boxcollision(){
     playerX = + 50;
@@ -89,7 +91,7 @@ function getDoor() { // benennt die Funktion nach dem was sie tutm nicht wann si
     keyY = 2000;
     
 }
-function openDoor(){
+function gotonextFloor(){
     score = score + 1;
     doorX = 2000;
     doorY = 2000;
@@ -107,7 +109,7 @@ function render() {      //creating viewable objects
     context.arc(keyX + keySize / 2, keyY + keySize / 2, keySize / 2, keySize / 2, 0, 360)
     context.fill()
 
-    context.fillStyle = "green"    //door
+    context.fillStyle = "red"    //door
     context.beginPath()
     context.arc(doorX + doorSize / 2, doorY + doorSize / 2, doorSize / 2, doorSize / 2, 0, 360)
     context.fill()
